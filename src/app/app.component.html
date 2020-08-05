@@ -1,14 +1,1 @@
-<div class="container">
-  <div class="row py-5 justify-content-center">
-    <div class="col-md-8">
-      <h1 class="text-center py-4">Sign In with google in Angular 8</h1>
-        <div *ngIf="loggedIn===false">
-        <div>
-          <button type="button" (click)="signInWithGoogle()" class="btn btn-primary">Sign In With Google</button>
-        </div>
-      </div>
-      <div *ngIf="loggedIn===true">        
-        <button type="button" (click)="signOut()" class="btn btn-primary">Sign Out</button>         </div>
-    </div>
-  </div>
-</div>
+<router-outlet></router-outlet>

@@ -1,23 +1,27 @@
 import { Component } from '@angular/core';
-import { SocialUser, SocialAuthService, GoogleLoginProvider } from 'angularx-social-login';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
+import { authConfig } from './auth.config';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent{
-  user: SocialUser;
-  loggedIn: boolean=false;
 
-  constructor(private authService:  SocialAuthService) { }  
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.loggedIn = true;
+  constructor(private oauthService: OAuthService) {
+    this.configureWithNewConfigApi();
   }
-  signOut(): void {
-    this.authService.signOut();
-    this.loggedIn = false;
+
+  private async configureWithNewConfigApi() {
+    this.oauthService.configure(authConfig);
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    console.log(this.oauthService);
+    // awaitとしないとユーザーの情報が取得できない。
+    await this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
+
 }
 
 
