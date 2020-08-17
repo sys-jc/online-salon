@@ -1,19 +1,42 @@
-<h2 *ngIf="!name">
-  Hello
-</h2>
-<h3 *ngIf="name">
-  Hello, Name={{name}}, e-mail={{email}}
-</h3>
-
-<!-- <div *ngIf="token">
-  Token={{token}}
-</div> -->
-
-
-<button class="btn btn-default" (click)="login()">
-  Login
-</button>
-<!-- <button class="btn btn-default" (click)="logout()">
-  Logout
-</button> -->
-
+<mat-card>
+  <mat-card-actions>
+    <button style="border:0;background:none;" (click)="login()">
+      <img src="\assets\btn_google_signin_dark_normal_web.png" />
+    </button>
+  </mat-card-actions>
+  <mat-card-content>
+    <form [style.display]="claims ? 'block' : 'none'">
+      <h2>空手オンラインサロン予約 登録者情報</h2>
+      <mat-form-field>
+        <mat-label>姓</mat-label>
+        <input matInput [value]="member.sei" >
+      </mat-form-field>
+      <mat-form-field >
+        <mat-label>名</mat-label>
+        <input matInput [value]="member.mei" >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>道場会員番号</mat-label>
+        <input matInput numberInput [value]="member.dojoid" disabled>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>会員枝番</mat-label>
+        <input matInput [value]="member.dojoeda" disabled>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>クラス</mat-label>
+        <input matInput [value]="member.class">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>階級</mat-label>
+        <input matInput [value]="member.grade">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>メール</mat-label>
+        <input matInput [value]="member.mail">
+      </mat-form-field>
+      <button mat-flat-button color="warn" (click)="upd_tblmem()">ユーザ情報登録/更新</button>
+    </form>
+    <p [style.display]="claims ? 'none' : 'block'"> 上の「sign in with google」ボタンをクリックして、googleアカウントでログインするか、新規アカウントを作成してください </p>
+  </mat-card-content>
+</mat-card>

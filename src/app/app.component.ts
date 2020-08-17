@@ -16,8 +16,8 @@ export class AppComponent{
 
   private async configureWithNewConfigApi() {
     this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    console.log(this.oauthService);
+    // this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    // console.log(this.oauthService);
     // awaitとしないとユーザーの情報が取得できない。
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
