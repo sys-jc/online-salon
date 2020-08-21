@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
     this.googolePageInit();
     this.route.paramMap.subscribe((params: ParamMap)=>{
       this.djid = params.get('dojo');
+      // console.log(this.djid);
       if (this.djid === null){
         this.djid = localStorage.getItem('olsalon_dojo');
       }else{
@@ -57,7 +58,6 @@ export class HomeComponent implements OnInit {
       }      
     });
   }
-
   public login() {
     this.oauthService.revokeTokenAndLogout();
     this.oauthService.initLoginFlow();
@@ -81,6 +81,10 @@ export class HomeComponent implements OnInit {
       this.member.gid = this.claims.sub;
       this.get_tblmem(this.claims);
     }
+    this.djid = localStorage.getItem('olsalon_dojo');
+    this.get_tbldj(this.djid);
+    this.form = localStorage.getItem('olsalon_form');
+    // console.log("login",this.dojo);
   }
 
   public get_tblmem(loginfo):void {
@@ -99,7 +103,7 @@ export class HomeComponent implements OnInit {
           this.flgEx=false;
           this.member.sei=loginfo.family_name;
           this.member.mei=loginfo.given_name;
-          console.log('getmemid前', this.djid);
+          // console.log('getmemid前', this.djid);
           this.get_memid(this.djid);
           this.member.memeda=1;
           this.member.class="未登録";
@@ -154,7 +158,8 @@ export class HomeComponent implements OnInit {
     }  
   }
   goForm(){
-    this.upd_tblmem()
+    this.upd_tblmem();
+    localStorage.setItem('olsalon_pay', this.dojo);
     const param = this.form.split("~");
     const site = "https://docs.google.com/forms/d/" + param[0] + "/viewform?usp=pp_url" 
      + "&entry." + param[1] + "=" + this.member.mail 
@@ -176,11 +181,12 @@ export class HomeComponent implements OnInit {
       .valueChanges
       .subscribe(({ data }) => {
         this.dojo = data.tbldojo_by_pk.dojoname;
+        console.log(this.dojo);
       });
   }
 
   public get_memid(dojoid:string):void{
-    console.log(dojoid);
+    // console.log(dojoid);
     this.apollo.watchQuery<any>({
       query: Query.GetQuery3,
       variables: { 
@@ -189,7 +195,7 @@ export class HomeComponent implements OnInit {
       })
       .valueChanges
       .subscribe(({ data }) => {
-        console.log(data.tblmember_aggregate.aggregate.max.memid==null);
+        // console.log(data.tblmember_aggregate.aggregate.max.memid==null);
         if (data.tblmember_aggregate.aggregate.max.memid==null) {
           this.member.memid = 1;
         } else {
