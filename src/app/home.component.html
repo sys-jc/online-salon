@@ -6,37 +6,47 @@
   </mat-card-actions>
   <mat-card-content>
     <form [style.display]="claims ? 'block' : 'none'">
-      <h2>空手オンラインサロン予約 登録者情報</h2>
+      <h2>空手オンラインサロン予約 登録者情報（道場名： {{dojo}}  )</h2>
+      <mat-form-field style="width:4em">
+        <mat-label>道場ID</mat-label>
+        <input matInput numberInput [value]="djid" disabled>
+      </mat-form-field>
+      <mat-form-field style="width:7em">
+        <mat-label>道場会員番号</mat-label>
+        <input matInput [value]="member.memid" disabled>
+      </mat-form-field>
       <mat-form-field>
         <mat-label>姓</mat-label>
-        <input matInput [value]="member.sei" >
+        <input matInput [(ngModel)]="member.sei" name="sei">
       </mat-form-field>
       <mat-form-field >
         <mat-label>名</mat-label>
-        <input matInput [value]="member.mei" >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>道場会員番号</mat-label>
-        <input matInput numberInput [value]="member.dojoid" disabled>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>会員枝番</mat-label>
-        <input matInput [value]="member.dojoeda" disabled>
+        <input matInput [(ngModel)]="member.mei" name="mei">
       </mat-form-field>
       <mat-form-field>
         <mat-label>クラス</mat-label>
-        <input matInput [value]="member.class">
+        <input matInput [(ngModel)]="member.class" name="cla">
       </mat-form-field>
       <mat-form-field>
-        <mat-label>階級</mat-label>
-        <input matInput [value]="member.grade">
+        <mat-label>生年月日</mat-label>
+        <!-- <input matInput [(ngModel)]="member.birth" name="bir"> -->
+        <!-- <div class="date-input-container"> -->
+          <input matInput [matDatepicker]="picker" [(ngModel)]="member.birth" name="bir">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        <!-- </div> -->
       </mat-form-field>
+
+
       <mat-form-field>
         <mat-label>メール</mat-label>
-        <input matInput [value]="member.mail">
+        <input matInput [(ngModel)]="member.mail" name="mai">
       </mat-form-field>
-      <button mat-flat-button color="warn" (click)="upd_tblmem()">ユーザ情報登録/更新</button>
+      <!-- <button mat-flat-button (click)="upd_tblmem()">{{ flgEx == true ? 'ユーザ情報変更' : 'ユーザ情報登録' }}</button> -->
     </form>
     <p [style.display]="claims ? 'none' : 'block'"> 上の「sign in with google」ボタンをクリックして、googleアカウントでログインするか、新規アカウントを作成してください </p>
   </mat-card-content>
+  <!-- <button mat-flat-button color="warn" (click)="upd_tblmem()">決済</button>   -->
+  <button mat-flat-button color="accent" (click)="goForm()">予約申込</button>
 </mat-card>
+<!-- <iframe [src]="safeSite" width="640" height="940" marginheight="0" marginwidth="0"></iframe> -->

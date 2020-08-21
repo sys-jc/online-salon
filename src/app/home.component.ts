@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap  } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Apollo } from 'apollo-angular';
 import * as Query from './graph-ql/queries';
-
-// declare var gapi:any;
+import * as moment from 'moment';
 
 class Member {
+  gid:number;
   sei:string;
   mei:string;
-  dojoid:number;
-  dojoeda:number;
+  memid:number;
+  memeda:number;
   class:string;
-  grade:string;
+  birth:Date;
   mail:string;
+  id:number;
   constructor(init?:Partial<Member>) {
       Object.assign(this, init);
   }
@@ -24,105 +26,43 @@ class Member {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  // public auth2: any;
   claims:any;
   public member:Member=new Member();
   public membs :Member[]=[];
   public flgEx:boolean=false;
+  public djid:string;
+  public dojo:string;
+  public form:string;
   constructor(private oauthService: OAuthService,
-              private apollo: Apollo) {}
+              // private sanitizer: DomSanitizer,          
+              private route: ActivatedRoute,
+              private apollo: Apollo) {
+              }
 
   ngOnInit() {
     this.googolePageInit();
-    // console.log(this.oauthService.getIdentityClaims());
+    this.route.paramMap.subscribe((params: ParamMap)=>{
+      this.djid = params.get('dojo');
+      if (this.djid === null){
+        this.djid = localStorage.getItem('olsalon_dojo');
+      }else{
+        this.get_tbldj(this.djid);
+        localStorage.setItem('olsalon_dojo', this.djid);
+      }
+      this.form = params.get('form');
+      if (this.form === null){
+        this.form = localStorage.getItem('olsalon_form');
+      }else{
+        localStorage.setItem('olsalon_form', this.form);
+      }      
+    });
   }
-
-  // public googleInit() {
-  //   let that = this;
-  //   let result = false;
-  //   gapi.load('auth2', function () {
-  //     that.auth2 = gapi.auth2.init({
-  //       client_id: '913080910103-9ijeb0amimtamudqpqfdkb42vqvfcptj.apps.googleusercontent.com',
-  //       cookiepolicy: 'single_host_origin',
-  //       scope: 'profile email'
-  //     });
-  //     // console.log(that);
-  //     that.auth2.then(that.checkForLoggedInUser(that));
-
-  //     that.attachSignin(that.element.nativeElement.querySelector('#googleBtn'));
-  //   });
-  //   gapi.signin2.render(
-  //     "googleBtn",
-  //     {
-  //       "scope": "profile email",
-  //       "theme": "dark"
-  //     });
-  // }
-
-  // public attachSignin(element) {
-  //   let that = this;
-  //   this.auth2.attachClickHandler(element, {},
-  //     function (googleUser) {
-
-  //       let profile = googleUser.getBasicProfile();
-  //       // console.log(profile);
-  //       // console.log('Token || ' + googleUser.getAuthResponse().id_token);
-  //       that.get_tblmem(profile.getId());
-  //       // console.log('ID: ' + profile.getId());
-  //       // console.log('Name: ' + profile.getName());
-  //       // console.log('Image URL: ' + profile.getImageUrl());
-  //       // console.log('Email: ' + profile.getEmail());
-  //       // //YOUR CODE HERE
-        
-  //       console.log(that.member.mail,profile.getEmail());
-  //       if (!that.member.mail || that.member.mail==='undefined') {
-  //         that.member.mail = profile.getEmail();
-  //       }
-
-  //     }, function (error) {
-  //       console.log(JSON.stringify(error, undefined, 2));
-  //     });
-  // }
-  // public checkForLoggedInUser(lcthis) {
-  //   let auth = gapi.auth2.getAuthInstance();
-  //   // console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-  //   let profile = auth.currentUser.get().getBasicProfile();
-  //   console.log(auth.currentUser,auth.currentUser.get());
-  //   lcthis.get_tblmem(profile.getId());
-  //   if (auth.isSignedIn.get()) {
-  //     // let profile = auth.currentUser.get().getBasicProfile();
-  //     // console.log(lcthis,profile.getId());
-  //     lcthis.get_tblmem(profile.getId());
-  //     // console.log('Name: ' + profile.getName());
-  //     // console.log('Image URL: ' + profile.getImageUrl());
-  //     // console.log('Email: ' + profile.getEmail());
-  //     if (!lcthis.member.mail) {
-  //       lcthis.member.mail = profile.getEmail();
-  //     }
-  //   }
-  // }
 
   public login() {
     this.oauthService.revokeTokenAndLogout();
     this.oauthService.initLoginFlow();
-    // this.oauthService.tryLogin();
+    this.googolePageInit();
   }
-
-  // public get name() {
-  //   this.claims = this.oauthService.getIdentityClaims();
-  //   if (!this.claims) {
-  //     return null;
-  //   }
-  //   return this.claims['name'];
-  // }
-
-  // public get email() {
-  //   this.claims = this.oauthService.getIdentityClaims();
-  //   if (!this.claims) {
-  //     return null;
-  //   }
-  //   return this.claims['email'];
-  // }
 
   // Google ページ初期化
   private async googolePageInit() {
@@ -138,18 +78,19 @@ export class HomeComponent implements OnInit {
     // すでに Google にログインしている場合ログイン後の画面を表示
     this.claims =  this.oauthService.getIdentityClaims();
     if (this.claims) {
+      this.member.gid = this.claims.sub;
       this.get_tblmem(this.claims);
-    } else {
-
     }
   }
 
   public get_tblmem(loginfo):void {
     this.membs=[];
+    
     this.apollo.watchQuery<any>({
       query: Query.GetQuery1,
       variables: { 
-          gid : loginfo.sub
+          gid : loginfo.sub,
+          did : this.djid
         },
       })
       .valueChanges
@@ -157,8 +98,13 @@ export class HomeComponent implements OnInit {
         if (data.tblmember.length==0){
           this.flgEx=false;
           this.member.sei=loginfo.family_name;
-
-
+          this.member.mei=loginfo.given_name;
+          console.log('getmemid前', this.djid);
+          this.get_memid(this.djid);
+          this.member.memeda=1;
+          this.member.class="未登録";
+          // this.member.birth="未登録";
+          this.member.mail=loginfo.email;
         } else { 
           this.flgEx=true; 
           this.membs = data.tblmember;
@@ -166,14 +112,89 @@ export class HomeComponent implements OnInit {
         }
       });
   }
-  public upd_tblmem():void {
-    
-    this.oauthService.revokeTokenAndLogout();
-    
-    console.log(this.oauthService.getIdentityClaims());
-    
+  public upd_tblmem():void {    
+    if (this.flgEx){
+      this.apollo.mutate<any>({
+        mutation: Query.UpdateMember,
+        variables: {
+          "_set": {
+            "mail" :  this.member.mail,
+            "sei" :   this.member.sei,
+            "mei" :   this.member.mei,
+            "class" : this.member.class,
+            "birth" : moment(this.member.birth).format("YYYY-MM-DD") },
+          id: this.member.id 
+        },
+      }).subscribe(({ data }) => {
+        console.log('UpdateMember', data);
+      },(error) => {
+        console.log('error UpdateMember', error);
+      });
+    }else{  
+      this.apollo.mutate<any>({
+        mutation: Query.InsertMember,
+        variables: {
+          "object": {
+            "googleid": this.member.gid,
+            "dojoid" : this.djid,
+            "mail" :  this.member.mail,
+            "sei" :   this.member.sei,
+            "mei" :   this.member.mei,
+            "class" : this.member.class,
+            "birth" : moment(this.member.birth).format("YYYY-MM-DD"),
+            "memid" : this.member.memid,
+            "memeda" : this.member.memeda,
+           }
+        },
+      }).subscribe(({ data }) => {
+        console.log('InsertMember', data);
+      },(error) => {
+        console.log('error InsertMember', error);
+      });
+    }  
+  }
+  goForm(){
+    this.upd_tblmem()
+    const param = this.form.split("~");
+    const site = "https://docs.google.com/forms/d/" + param[0] + "/viewform?usp=pp_url" 
+     + "&entry." + param[1] + "=" + this.member.mail 
+     + "&entry." + param[2] + "=" + this.member.sei
+     + "&entry." + param[3] + "=" + this.member.mei
+     + "&entry." + param[4] + "=" + moment(this.member.birth).format("YYYY-MM-DD") 
+     + "&entry." + param[5] + "=" + this.member.class;
+    window.location.href=site;
   }
 
+  public get_tbldj(dojoid:string):void {
+    this.membs=[];
+    this.apollo.watchQuery<any>({
+      query: Query.GetQuery2,
+      variables: { 
+          did : dojoid
+        },
+      })
+      .valueChanges
+      .subscribe(({ data }) => {
+        this.dojo = data.tbldojo_by_pk.dojoname;
+      });
+  }
 
-
+  public get_memid(dojoid:string):void{
+    console.log(dojoid);
+    this.apollo.watchQuery<any>({
+      query: Query.GetQuery3,
+      variables: { 
+          did : dojoid
+        },
+      })
+      .valueChanges
+      .subscribe(({ data }) => {
+        console.log(data.tblmember_aggregate.aggregate.max.memid==null);
+        if (data.tblmember_aggregate.aggregate.max.memid==null) {
+          this.member.memid = 1;
+        } else {
+          this.member.memid = data.tblmember_aggregate.aggregate.max.memid + 1; 
+        }
+      });
+  }
 }
