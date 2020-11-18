@@ -26,6 +26,7 @@
     "@angular/compiler": "~9.0.1",
     "@angular/compiler-cli": "~9.0.1",
     "@angular/core": "~9.0.1",
+    "@angular/flex-layout": "^11.0.0-beta.33",
     "@angular/forms": "~9.0.1",
     "@angular/material": "^9.2.4",
     "@angular/platform-browser": "~9.0.1",
@@ -45,13 +46,14 @@
     "graphql-tag": "^2.11.0",
     "jquery": "^3.5.1",
     "moment": "^2.27.0",
+    "ngx-yubinbango": "^1.0.5",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "typescript": "3.7.5",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1000.4",
+    "@angular-devkit/build-angular": "^0.1100.1",
     "@angular/language-service": "~9.0.1",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",

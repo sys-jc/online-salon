@@ -1,28 +1,35 @@
 import gql from 'graphql-tag';
 
 export const GetQuery1 = gql`
-query get_member($gid: String!,$did: String!) {
+query get_member($gid: String!,$did: Int!) {
   tblmember(where: {googleid: {_eq: $gid}, dojoid: {_eq: $did}}) {
+    googleid
+    dojoid
+    memid
+    eda
+    mail
     sei
     mei
-    memid
-    memeda
-    class
     birth
-    mail
-    id
+    class
+    zip
+    region
+    local
+    street
+    extend
+    tel
   }
 }`;
 
 export const GetQuery2 = gql`
-query get_dojo($did: String!) {
-  tbldojo_by_pk(dojoid:$did) {
+query get_dojo($did: Int!) {
+  tblowner(where: {dojoid: {_eq: $did}}) {
     dojoname
   }
 }`;
 
 export const GetQuery3 = gql`
-query calc_memid($did: String!) {
+query calc_memid($did: Int!) {
   tblmember_aggregate(where: {dojoid: {_eq: $did}}) {
     aggregate {
       max {
@@ -33,9 +40,9 @@ query calc_memid($did: String!) {
 }`;
 
 export const UpdateMember = gql`
-mutation upd_member($_set: tblmember_set_input!, $id: Int!) {
-  update_tblmember_by_pk(pk_columns: {id: $id}, _set: $_set) {
-    id
+mutation upd_member($_set: tblmember_set_input!, $id: Int!, $gid: String!,$eda: Int!) {
+  update_tblmember_by_pk(pk_columns: {dojoid: $id,googleid: $gid,eda: $eda}, _set: $_set) {
+    memid
     googleid
   }
 }`;
@@ -43,7 +50,19 @@ mutation upd_member($_set: tblmember_set_input!, $id: Int!) {
 export const InsertMember = gql`
 mutation ins_member($object: tblmember_insert_input!) {
   insert_tblmember_one(object: $object) {
-    id
+    memid
     googleid
+  }
+}`;
+
+export const GetQuery5 = gql`
+query get_frmfld($type: String!) {
+  tblfrmfld_by_pk(type: $type) {
+    mail
+    eda
+    sei
+    mei
+    birth
+    class
   }
 }`;

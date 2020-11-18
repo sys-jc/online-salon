@@ -8,7 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
 // import * as $ from 'jquery';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +18,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { PayComponent } from './pay.component';
+import { NgxYubinBangoModule } from 'ngx-yubinbango';
+
 
 @NgModule({
   declarations: [
@@ -31,14 +35,18 @@ import { PayComponent } from './pay.component';
     HttpClientModule,
     OAuthModule.forRoot(),
     GraphQLModule,
-    FormsModule 
+    NgxYubinBangoModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FlexLayoutModule
     ,MatButtonModule
     ,MatCardModule
     ,MatDatepickerModule
     ,MatFormFieldModule
     ,MatIconModule
     ,MatInputModule
-    ,MatNativeDateModule,
+    ,MatNativeDateModule
+    ,MatSelectModule,
     BrowserAnimationsModule
   ],
   providers: [

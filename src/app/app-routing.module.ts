@@ -6,8 +6,7 @@ import { PayComponent } from './pay.component';
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'pay', component: PayComponent},
-  {path: 'home/:form', component: HomeComponent},
-  {path: 'home/:form/:dojo', component: HomeComponent},
+  {path: 'home/:form/:type/:dojo', component: HomeComponent},
   // redirectTo は'/home'にすると情報を取得できなくなるので注意
   {path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];
