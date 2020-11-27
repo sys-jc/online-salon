@@ -284,7 +284,7 @@ export class HomeComponent implements OnInit {
   insEda():void {
     console.log(this.member);
     this.upd_tblmem();
-    let eda:number = this.membs.map(function (p) {
+    let eda:number[] = this.membs.map(function (p) {
       return p.eda;
     });
     this.member.mei="";
