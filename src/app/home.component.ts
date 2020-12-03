@@ -229,6 +229,7 @@ export class HomeComponent implements OnInit {
         console.log(data,data.tblfrmfld_by_pk); 
         const site = "https://docs.google.com/forms/d/" + this.form + "/viewform?usp=pp_url" 
         + "&entry." + data.tblfrmfld_by_pk.mail + "=" + this.member.mail 
+        + "&entry." + data.tblfrmfld_by_pk.memid + "=" + this.member.memid
         + "&entry." + data.tblfrmfld_by_pk.eda + "=" + this.member.eda
         + "&entry." + data.tblfrmfld_by_pk.sei + "=" + this.FrmGrp1.value.sei
         + "&entry." + data.tblfrmfld_by_pk.mei  + "=" + this.FrmGrp1.value.mei
