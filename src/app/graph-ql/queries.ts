@@ -59,6 +59,7 @@ export const GetQuery5 = gql`
 query get_frmfld($type: String!) {
   tblfrmfld_by_pk(type: $type) {
     mail
+    memid
     eda
     sei
     mei
