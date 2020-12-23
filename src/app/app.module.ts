@@ -21,10 +21,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { PayComponent } from './pay.component';
 import { NgxYubinBangoModule } from 'ngx-yubinbango';
 import { HistComponent } from './hist.component';
+import { MembComponent } from './memb.component';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import { HistComponent } from './hist.component';
     AppComponent,
     HomeComponent,
     PayComponent,
-    HistComponent
+    HistComponent,
+    MembComponent
   ],
   imports: [
     BrowserModule,
@@ -42,8 +45,8 @@ import { HistComponent } from './hist.component';
     GraphQLModule,
     NgxYubinBangoModule,
     FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ReactiveFormsModule
     ,MatButtonModule
     ,MatCardModule
     ,MatDatepickerModule
@@ -54,6 +57,7 @@ import { HistComponent } from './hist.component';
     ,MatPaginatorModule
     ,MatSelectModule
     ,MatTableModule
+    ,MatTabsModule
     ,MatToolbarModule,
     BrowserAnimationsModule
   ],

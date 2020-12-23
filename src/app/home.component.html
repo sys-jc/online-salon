@@ -1,113 +1,50 @@
 <mat-toolbar class="toolbar mat-elevation-z8">
   <div class="icon-area" fxLayout="row" fxLayoutGap="5px">
-      <a mat-flat-button target="_blank" routerLink="hist">
-          <mat-icon>history</mat-icon>
-          申し込み履歴
-      </a>
-      <button mat-button (click)="test()">
-          <mat-icon>payment</mat-icon>
-          月謝支払
-      </button>
-      <button mat-button (click)="test()">
-          <mat-icon>recent_actors</mat-icon>
-          会員登録
-      </button>
-      <a mat-flat-button target="_blank" href="https://www.tokaido.tokyo/user_data/download/SalonManual/owner/12.pdf"><mat-icon>help</mat-icon>PDFマニュアル</a>
-  </div>
-</mat-toolbar>
-<mat-card>
-  <mat-card-actions>
     <button style="border:0;background:none;" (click)="login()">
       <img src="assets/btn_google_signin_dark_normal_web.png" />
     </button>
-    <p [style.display]="claims ? 'block' : 'none'"> 
-      <button mat-flat-button color="accent" (click)="goForm()" [style.display]="claims ? 'block' : 'none'">予約申込</button>
-    </p>
-  </mat-card-actions>
-  <mat-card-content [style.display]="claims ? 'block' : 'none'">
-    <h2>空手オンラインサロン予約 登録者情報（道場名： {{dojo}}  )</h2>
-    <form [formGroup]="FrmGrp1" class="example-form container" ngNativeValidate (submit)="false" fxLayoutGap="7px">
-      <div fxLayout="row" fxLayoutGap="7px">
-        <mat-form-field>
-          <mat-label>メール</mat-label>
-          <input matInput [value]="member.mail" name="mai" disabled>
-        </mat-form-field>
-        <mat-form-field style="width:4em">
-          <mat-label>道場ID</mat-label>
-          <input matInput [value]="djid" disabled>
-        </mat-form-field>
-        <mat-form-field style="width:7em">
-          <mat-label>道場会員番号</mat-label>
-          <input matInput [value]="member.memid" disabled>
-        </mat-form-field>
-        <mat-form-field style="width:4em">
-          <mat-label>会員枝番</mat-label>
-          <mat-select formControlName="eda" required (selectionChange)="changeEda($event.value)">
-            <mat-option *ngFor="let mem of membs" [value]="mem.eda">
-              {{ mem.eda }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <p><button mat-flat-button color="warn" (click)="insEda()">兄弟会員追加</button></p>
-      </div>
-      <mat-form-field>
-        <mat-label>姓</mat-label>
-        <input matInput formControlName="sei" required>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>名</mat-label>
-        <input matInput formControlName="mei" required>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>クラス</mat-label>
-        <input matInput formControlName="class">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>生年月日</mat-label>
-        <!-- <input matInput [(ngModel)]="member.birth" name="bir"> -->
-        <!-- <div class="date-input-container"> -->
-          <input matInput [matDatepicker]="picker" formControlName="birth">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        <!-- </div> -->
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>電話番号</mat-label>
-        <input matInput formControlName="tel">
-      </mat-form-field>
-    </form>
-    <form [formGroup]="FrmGrp2" class="example-form container" ngNativeValidate ybAddress (submit)="false" [ybAutocompleteMode]="'off'" #address="ybAddress" fxLayout="row" fxLayoutGap="7px">
-      <mat-form-field>
-        <mat-label>郵便番号</mat-label>
-        <input matInput formControlName="zip" ybPostalCode required>
-        <button mat-button matSuffix mat-stroked-button aria-label="get" (click)="address.complete()">
-          住所補完
-        </button>
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>都道府県</mat-label>
-        <input matInput formControlName="region" ybRegion required>
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>市区町村</mat-label>
-        <input matInput formControlName="local" ybLocality required>
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>町名・番地</mat-label>
-        <input matInput formControlName="street" ybStreet required>
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>マンション・ビル名</mat-label>
-        <input matInput formControlName="extend" ybExtended>
-      </mat-form-field>
-      <!-- <button mat-flat-button (click)="upd_tblmem()">{{ flgEx == true ? 'ユーザ情報変更' : 'ユーザ情報登録' }}</button> -->
-    </form>
-  </mat-card-content>
-  <p [style.display]="claims ? 'none' : 'block'"> 上の「sign in with google」ボタンをクリックして、googleアカウントでログインするか、新規アカウントを作成してください </p>
-  <!-- <button mat-flat-button color="warn" (click)="upd_tblmem()">決済</button>   -->
+    <a mat-flat-button target="_blank" href="https://www.tokaido.tokyo/user_data/download/SalonManual/owner/12.pdf"><mat-icon>help</mat-icon>PDFマニュアル</a>
+  </div>
+</mat-toolbar>
+<mat-card>
+  <mat-tab-group [(selectedIndex)]="TabIndex" [backgroundColor]="'primary'" >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">event</mat-icon>
+        予約申込・会員情報
+      </ng-template>
+      <mat-card-content>
+        <form [formGroup]="form">
+          <app-memb (action)="goForm()" (action2)="insEda()" (action3)="changeEda($event)"></app-memb>
+        </form>  
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">history</mat-icon>
+        申込履歴
+      </ng-template>
+      <mat-card-content>
+        <app-hist></app-hist>
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">payment</mat-icon>
+        月謝支払
+      </ng-template>
+      <mat-card-content>  
+        決済契約後、導入予定
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">people</mat-icon>
+          会員登録
+      </ng-template>
+      <mat-card-content>  
+        作成中
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>
-<!-- <iframe [src]="safeSite" width="640" height="940" marginheight="0" marginwidth="0"></iframe> -->

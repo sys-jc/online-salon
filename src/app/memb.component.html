@@ -1,0 +1,97 @@
+<mat-card>
+    <mat-card-actions>
+      <div [style.display]="memsrv.claims ? 'block' : 'none'">
+        <p [style.display]="memsrv.flgSm == true ? 'none' : 'block'">
+          <button mat-flat-button color="accent" (click)="goForm()" [style.display]="memsrv.claims ? 'block' : 'none'">予約申込</button>
+        </p>
+        <p [style.display]="memsrv.flgSm == false ? 'none' : 'block'">
+          表示中の会員枝番で予約申込済です
+        </p>
+      </div>
+    </mat-card-actions>
+    <mat-card-content [style.display]="memsrv.claims ? 'block' : 'none'">
+      <h2>空手オンラインサロン予約 登録者情報（道場名： {{memsrv.dojo}}  )</h2>
+      <form formGroupName="grp1" class="container" ngNativeValidate (submit)="false" fxLayoutGap="7px">
+        <div fxLayout="row" fxLayoutGap="7px">
+          <mat-form-field>
+            <mat-label>メール</mat-label>
+            <input matInput [value]="memsrv.member.mail" name="mai" disabled>
+          </mat-form-field>
+          <mat-form-field style="width:4em">
+            <mat-label>道場ID</mat-label>
+            <input matInput [value]="memsrv.djid" disabled>
+          </mat-form-field>
+          <mat-form-field style="width:7em">
+            <mat-label>道場会員番号</mat-label>
+            <input matInput [value]="memsrv.member.memid" disabled>
+          </mat-form-field>
+          <mat-form-field style="width:4em">
+            <mat-label>会員枝番</mat-label>
+            <mat-select formControlName="eda" required (selectionChange)="changeEda($event.value)">
+              <mat-option *ngFor="let mem of memsrv.membs" [value]="mem.eda">
+                {{ mem.eda }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <p><button mat-flat-button color="warn" (click)="insEda()">枝番(兄弟など)会員追加</button></p>
+        </div>
+        <mat-form-field>
+          <mat-label>姓</mat-label>
+          <input matInput formControlName="sei" required>
+        </mat-form-field>
+        <mat-form-field >
+          <mat-label>名</mat-label>
+          <input matInput formControlName="mei" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>クラス</mat-label>
+          <input matInput formControlName="class">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>生年月日</mat-label>
+          <!-- <input matInput [(ngModel)]="member.birth" name="bir"> -->
+          <!-- <div class="date-input-container"> -->
+            <input matInput [matDatepicker]="picker" formControlName="birth">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          <!-- </div> -->
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>電話番号</mat-label>
+          <input matInput formControlName="tel">
+        </mat-form-field>
+      </form>
+      <form formGroupName="grp2" class="container" ngNativeValidate ybAddress (submit)="false" [ybAutocompleteMode]="'off'" #address="ybAddress" fxLayout="row" fxLayoutGap="7px">
+        <mat-form-field>
+          <mat-label>郵便番号</mat-label>
+          <input matInput formControlName="zip" ybPostalCode required>
+          <button mat-button matSuffix mat-stroked-button aria-label="get" (click)="address.complete()">
+            住所補完
+          </button>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>都道府県</mat-label>
+          <input matInput formControlName="region" ybRegion required>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>市区町村</mat-label>
+          <input matInput formControlName="local" ybLocality required>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>町名・番地</mat-label>
+          <input matInput formControlName="street" ybStreet required>
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>マンション・ビル名</mat-label>
+          <input matInput formControlName="extend" ybExtended>
+        </mat-form-field>
+        <!-- <button mat-flat-button (click)="upd_tblmem()">{{ flgEx == true ? 'ユーザ情報変更' : 'ユーザ情報登録' }}</button> -->
+      </form>
+    </mat-card-content>
+    <p [style.display]="memsrv.claims ? 'none' : 'block'"> 上の「sign in with google」ボタンをクリックして、googleアカウントでログインするか、新規アカウントを作成してください </p>
+    <!-- <button mat-flat-button color="warn" (click)="upd_tblmem()">決済</button>   -->
+  </mat-card>
