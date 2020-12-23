@@ -1,3 +1,20 @@
+<mat-toolbar class="toolbar mat-elevation-z8">
+  <div class="icon-area" fxLayout="row" fxLayoutGap="5px">
+      <a mat-flat-button target="_blank" routerLink="hist">
+          <mat-icon>history</mat-icon>
+          申し込み履歴
+      </a>
+      <button mat-button (click)="test()">
+          <mat-icon>payment</mat-icon>
+          月謝支払
+      </button>
+      <button mat-button (click)="test()">
+          <mat-icon>recent_actors</mat-icon>
+          会員登録
+      </button>
+      <a mat-flat-button target="_blank" href="https://www.tokaido.tokyo/user_data/download/SalonManual/owner/12.pdf"><mat-icon>help</mat-icon>PDFマニュアル</a>
+  </div>
+</mat-toolbar>
 <mat-card>
   <mat-card-actions>
     <button style="border:0;background:none;" (click)="login()">

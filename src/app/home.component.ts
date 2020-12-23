@@ -157,7 +157,9 @@ export class HomeComponent implements OnInit {
         this.FrmGrp2.patchValue(this.member);
       });
   }
-  public upd_tblmem():void {    
+  public upd_tblmem():void {
+    localStorage.setItem('olsalon_mail', this.member.mail); 
+    localStorage.setItem('olsalon_memid', this.member.memid.toString());
     if (this.flgEx){
       this.apollo.mutate<any>({
         mutation: Query.UpdateMember,
@@ -296,5 +298,9 @@ export class HomeComponent implements OnInit {
     this.changeEda(this.member.eda);
     this.flgEx=false;
     this.upd_tblmem();
+  }
+
+  test() {
+
   }
 }

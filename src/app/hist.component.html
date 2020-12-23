@@ -1,0 +1,55 @@
+<div class="mat-elevation-z8">
+    <mat-toolbar fxLayout="row" fxLayoutGap="10px">
+        <a mat-flat-button target="_blank" href="https://www.tokaido.tokyo/user_data/download/SalonManual/owner/14.pdf"><mat-icon>help</mat-icon>PDFマニュアル</a>
+    </mat-toolbar>
+    <table mat-table [dataSource]="dataSource" matSort class="full-width-table" aria-label="Elements">
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>開催日</th>
+            <td mat-cell *matCellDef="let row">{{row.date}}</td>
+        </ng-container>  
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>タイトル</th>
+            <td mat-cell *matCellDef="let row">{{row.title}}</td>
+        </ng-container>
+        <ng-container matColumnDef="stim">
+            <th mat-header-cell *matHeaderCellDef>開始時刻</th>
+            <td mat-cell *matCellDef="let row">{{row.stim}}</td>
+        </ng-container>
+        <ng-container matColumnDef="etim">
+            <th mat-header-cell *matHeaderCellDef>終了時刻</th>
+            <td mat-cell *matCellDef="let row">{{row.etim}}</td>
+        </ng-container>
+        <ng-container matColumnDef="eda">
+            <th mat-header-cell *matHeaderCellDef>枝番</th>
+            <td mat-cell *matCellDef="let row">{{row.eda}}</td>
+        </ng-container> 
+        <ng-container matColumnDef="sei">
+            <th mat-header-cell *matHeaderCellDef>参加者姓</th>
+            <td mat-cell *matCellDef="let row">{{row.sei}}</td>
+        </ng-container> 
+        <ng-container matColumnDef="mei">
+            <th mat-header-cell *matHeaderCellDef>参加者名</th>
+            <td mat-cell *matCellDef="let row">{{row.mei}}</td>
+        </ng-container> 
+        <ng-container matColumnDef="money">
+            <th mat-header-cell *matHeaderCellDef>金額</th>
+            <td mat-cell *matCellDef="let row" class="i_num">{{row.money | number}}</td>
+        </ng-container>
+        <ng-container matColumnDef="act1">
+            <th mat-header-cell *matHeaderCellDef>Action1</th>
+            <td mat-cell *matCellDef="let row; let i = index">
+              <button mat-raised-button color="warn" focusable="false" (click)="deleteRow(i)" class="tbl_bt" [style.display]="row.del=='削除済' ? 'none' : 'block'">
+                <mat-icon>cancel_presentation</mat-icon>キャンセル
+              </button>
+            </td>
+          </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator #paginators
+        [length]="dataSource?.data.length"
+        [pageIndex]="0"
+        [pageSize]="15"
+        [pageSizeOptions]="[15, 30, 50, 100]">
+    </mat-paginator>
+  </div>
